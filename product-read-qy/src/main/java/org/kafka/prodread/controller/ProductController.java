@@ -4,6 +4,7 @@ import org.kafka.prodread.model.dto.ProductDto;
 import org.kafka.prodread.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,13 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/id")
-    public ProductDto getProductById(int id) {
+    @GetMapping("/{id}")
+    public ProductDto getProductById(@PathVariable("id") String id) {
         return productService.getProductById(id);
+    }
+
+    @GetMapping("/write/{id}")
+    public ProductDto getProductByWriteId(@PathVariable("id") int id) {
+        return productService.getProductByWriteId(id);
     }
 }

@@ -25,8 +25,12 @@ public class ProductServiceImpl {
                 .collect(Collectors.toList());
     }
 
-    public ProductDto getProductById(int id) {
+    public ProductDto getProductById(String id) {
         return ProductMapper.toProductDto(productRepository.findById(id).orElse(null));
+    }
+
+    public ProductDto getProductByWriteId(int id) {
+        return ProductMapper.toProductDto(productRepository.findProductByWriteDbId(id));
     }
 
     @Transactional
@@ -41,7 +45,7 @@ public class ProductServiceImpl {
 
     @Transactional
     public String updateProduct(ProductEvent event) {
-        Product product =  productRepository.findById(event.productId()).orElse(null);
+        Product product =  productRepository.findProductByWriteDbId(event.productId());
         if (product == null) {
             throw new RuntimeException("Product not found in read db");
         }
@@ -54,7 +58,7 @@ public class ProductServiceImpl {
 
     @Transactional
     public String deleteProduct(ProductEvent event) {
-        Product product =  productRepository.findById(event.productId()).orElse(null);
+        Product product =  productRepository.findProductByWriteDbId(event.productId());
         if (product == null) {
             throw new RuntimeException("Product not found in read db");
         }
@@ -65,7 +69,7 @@ public class ProductServiceImpl {
 
     @Transactional
     public String changeActive(ProductEvent event) {
-        Product product =  productRepository.findById(event.productId()).orElse(null);
+        Product product =  productRepository.findProductByWriteDbId(event.productId());
         if (product == null) {
             throw new RuntimeException("Product not found in read db");
         }

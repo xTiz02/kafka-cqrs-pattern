@@ -73,11 +73,12 @@ public class ProductServiceImpl {
     public void changeActive(int id, boolean active) {
         Product product = productRepository.findById(id).orElseThrow(()->new RuntimeException("Product not found"));
         productRepository.changeProductActive(id,active);
+        System.out.println("Product active changed: "+active);
         ProductEvent productEvent = new ProductEvent(
                 EventType.ACTIVE,
                 null,
                 product.getId(),
-                product.isActive());
+                active);
         kafkaSendProductService.sendMessage(prodWriteTopic,productEvent);
 
     }
