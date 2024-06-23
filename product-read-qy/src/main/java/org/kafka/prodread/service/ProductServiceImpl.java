@@ -3,6 +3,7 @@ package org.kafka.prodread.service;
 import org.kafka.prodread.model.Product;
 import org.kafka.prodread.model.dto.ProductDto;
 import org.kafka.prodread.model.dto.ProductEvent;
+import org.kafka.prodread.model.dto.ProductViewDto;
 import org.kafka.prodread.model.repository.ProductRepository;
 import org.kafka.prodread.util.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,18 @@ public class ProductServiceImpl {
     private ProductRepository productRepository;
 
 
-    public List<ProductDto> getAllProducts() {
+    public List<ProductViewDto> getAllProducts() {
         return productRepository.findAll().stream()
-                .map(ProductMapper::toProductDto)
+                .map(ProductMapper::toProductViewDto)
                 .collect(Collectors.toList());
     }
 
-    public ProductDto getProductById(String id) {
-        return ProductMapper.toProductDto(productRepository.findById(id).orElse(null));
+    public ProductViewDto getProductById(String id) {
+        return ProductMapper.toProductViewDto(productRepository.findById(id).orElse(null));
     }
 
-    public ProductDto getProductByWriteId(int id) {
-        return ProductMapper.toProductDto(productRepository.findProductByWriteDbId(id));
+    public ProductViewDto getProductByWriteId(String id) {
+        return ProductMapper.toProductViewDto(productRepository.findProductByWriteDbId(id));
     }
 
     @Transactional
@@ -39,6 +40,7 @@ public class ProductServiceImpl {
         product.setActive(event.active());
         product.setWriteDbId(event.productId());
         productRepository.save(product);
+        //throw new RuntimeException("Error saving product in read db");
         //si algo falla en la actualizacion de la base de datos, se lanza una excepcion y se hace rollback
         return "Product saved in read db";
     }
@@ -52,6 +54,7 @@ public class ProductServiceImpl {
         ProductMapper.addProductDtoFields(product,event.productDto());
         product.setActive(event.active());
         productRepository.save(product);
+        //throw new RuntimeException("Error saving product in read db");
         //si algo falla en la actualizacion de la base de datos, se lanza una excepcion y se hace rollback
         return "Product updated in read db";
     }
@@ -63,6 +66,7 @@ public class ProductServiceImpl {
             throw new RuntimeException("Product not found in read db");
         }
         productRepository.delete(product);
+        //throw new RuntimeException("Error saving product in read db");
         //si algo falla en la actualizacion de la base de datos, se lanza una excepcion y se hace rollback
         return "Product deleted in read db";
     }
@@ -74,6 +78,7 @@ public class ProductServiceImpl {
             throw new RuntimeException("Product not found in read db");
         }
         productRepository.updateActive(event.productId(),event.active());
+        //throw new RuntimeException("Error saving product in read db");
         //si algo falla en la actualizacion de la base de datos, se lanza una excepcion y se hace rollback
         return "Product active status changed in read db";
     }

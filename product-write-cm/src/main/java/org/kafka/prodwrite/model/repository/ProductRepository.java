@@ -14,11 +14,20 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     @Modifying
-    @Query("update Product p set p.active = ?2, p.updatedAt = NOW() where p.id = ?1")
-    void changeProductActive(int id, boolean active);
+    @Query("update Product p set p.active = ?2, p.updatedAt = NOW() where p.unitCode = ?1")
+    void changeProductActiveByUnitId(String unitId, boolean active);
+
+    @Modifying
+    @Query("update Product p set p.active = ?2 where p.id = ?1")
+    void changeProductActiveById(int id, boolean active);
 
     @Modifying
     @Query("update Product p set p.stock = ?2 where p.id = ?1")
     void changeProductStock(int id, int stock);
+
+    void deleteByUnitCode(String unitCode);
+
+    Product findByUnitCode(String unitCode);
+
 
 }

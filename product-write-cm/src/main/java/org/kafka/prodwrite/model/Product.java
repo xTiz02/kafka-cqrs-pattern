@@ -10,6 +10,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
+    private String unitCode;
     private String name;
     private String description;
     private double price;
@@ -21,15 +23,16 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, boolean active, LocalDateTime updatedAt, LocalDateTime createdAt, int stock, double price, String description, String name) {
+    public Product(int id, String unitCode, String name, String description, double price, int stock, LocalDateTime createdAt, LocalDateTime updatedAt, boolean active) {
         this.id = id;
-        this.active = active;
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
-        this.stock = stock;
-        this.price = price;
-        this.description = description;
+        this.unitCode = unitCode;
         this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.active = active;
     }
 
     public int getStock() {
@@ -42,6 +45,14 @@ public class Product {
 
     public boolean isActive() {
         return active;
+    }
+
+    public String getUnitCode() {
+        return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
     }
 
     public void setActive(boolean active) {
@@ -98,15 +109,16 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Producto{" +
-                "id=" + id +
+        return "Product{" +
+                "active=" + active +
+                ", id=" + id +
+                ", unitCode=" + unitCode +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", active=" + active +
                 '}';
     }
 }

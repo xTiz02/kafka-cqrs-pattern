@@ -7,19 +7,19 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 public class Product {
-    @MongoId(value = FieldType.STRING)
+    @Id
     private String id;
     private String name;
     private String description;
     private double price;
     private int stock;
     private boolean active;
-    private int writeDbId;
+    private String writeDbId;
 
     public Product() {
     }
 
-    public Product(String id, String name, String description, double price, int stock, boolean active, int writeDbId) {
+    public Product(String id, String name, String description, double price, int stock, boolean active, String writeDbId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,11 +29,11 @@ public class Product {
         this.writeDbId = writeDbId;
     }
 
-    public int getWriteDbId() {
+    public String getWriteDbId() {
         return writeDbId;
     }
 
-    public void setWriteDbId(int writeDbId) {
+    public void setWriteDbId(String writeDbId) {
         this.writeDbId = writeDbId;
     }
 

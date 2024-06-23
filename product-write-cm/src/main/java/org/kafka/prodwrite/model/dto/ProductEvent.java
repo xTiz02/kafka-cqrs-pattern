@@ -5,7 +5,7 @@ import org.kafka.prodwrite.util.EventType;
 public record ProductEvent (
      EventType eventType,
      ProductDto productDto,
-     int productId,
+     String productId,
      boolean active
 ){
     @Override
